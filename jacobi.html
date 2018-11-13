@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>
+        Jacobi Method
+    </title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Выберите размер матрицы чтобы заполнить ее значениями</h1>
+<input type="number" id = "Count" maxlength="4" size="4" required>
+<input type="button" id="Draw" value="Press me" class ="NotPressed" onclick="{
+   if(document.getElementById('Draw').value !=='Pressed'){
+       let value = document.getElementById('Count').value;
+       console.log(value);
+       if(value && value<7){
+           drawMatrix(value);
+            document.getElementById('Draw').value = 'Pressed';
+       }
+        else{
+            if(value>7){
+               document.getElementById('Draw').value = 'Too big number';
+            }
+            else{
+                 document.getElementById('Draw').value = 'Enter number';
+            }
+        }
+   }
+}">
+<p id="last"></p>
+<script src="jacobi.js"></script>
+</body>
+</html>>
