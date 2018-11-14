@@ -6,7 +6,8 @@ let valuesObjects=[];
 let arrayValues = [];
 const accuracy = 0.001;
 const accuracyArray=[];
-const tableArray=[];
+const jacobiTableArray=[];
+const zeidelTableArray =[];
 function jacobiCanBeApplied(array){
     let mainDiagonalElem,sum,flag=true;
 
@@ -104,7 +105,7 @@ function findX(index) {
     let X=0;
     for(let i=0;i<array.length;i++){
         if(index !==i){
-            X-= array[index][i]*tableArray[tableArray.length-1][i];
+            X-= array[index][i]*jacobiTableArray[jacobiTableArray.length-1][i];
         }
     }
     return (X+Number(arrayValues[index])) *(1/array[index][index]).toFixed(numbsAfterComa);
@@ -122,18 +123,19 @@ function findFirstElem() {
         return (elem / array[index][index]);
     });
     firstElem.push(" - ");
-    tableArray.push(firstElem);
-    console.log(firstElem);
+    jacobiTableArray.push(firstElem);
+    zeidelTableArray.push(firstElem);
+    //console.log(firstElem);
 }
-function output() {
-    for(let i=0;i<tableArray.length;i++){
+function output(array) {
+    for(let i=0; i<array.length; i++){
         let output = " Iteration #"+i;
-        for(let j=0;j<tableArray[i].length;j++){
-            if(j!==tableArray[i].length-1){
-                output+=" X"+j +"  = "+tableArray[i][j];
+        for(let j=0; j<array[i].length; j++){
+            if(j!==array[i].length-1){
+                output+=" X"+j +"  = "+array[i][j];
             }
             else{
-                output+=" Pohubka = "+tableArray[i][j];
+                output+=" Pohubka = "+array[i][j];
             }
         }
         console.log(output);
@@ -143,19 +145,22 @@ function output() {
 function createTableArray(){
     findFirstElem();
     let max=findMax(accuracyArray);
-    let infelicity=100;
+    let jacobiInfelicity=100;
     do{
-        let infArray = [];
-        let currentTableRow = [];
+        let jacobiInfArray = [];
+        let currentJacobiTableRow = [];
+
         for(let i=0;i<array.length;i++){
-            currentTableRow.push(findX(i));
+            currentJacobiTableRow.push(findX(i));
         }
-        infArray = currentTableRow.map((i,index)=>tableArray[tableArray.length-1][index]-i);
-        infelicity = (max/(1-max))*findMax(infArray);
-        currentTableRow.push(infelicity);
-        tableArray.push(currentTableRow);
-    }while(infelicity>accuracy);
-    output();
+        jacobiInfArray = currentJacobiTableRow.map((i,index)=>jacobiTableArray[jacobiTableArray.length-1][index]-i);
+        jacobiInfelicity = (max/(1-max))*findMax(jacobiInfArray);
+        currentJacobiTableRow.push(jacobiInfelicity);
+        jacobiTableArray.push(currentJacobiTableRow);
+
+    }while(jacobiInfelicity>accuracy);
+    console.log("Jacobi Table Array ");
+    output(jacobiTableArray);
 }
 // jacobiCanBeApplied(array);
 // createTableArray();
